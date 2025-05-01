@@ -7,7 +7,7 @@ Provides a simple way to query a NTP server for time related data.
 
     NtpQuery ntpQuery = await ntpClient.GetTimeAsync(cts.Token);
 ```
-### Useful Links
+### References
 - Simple Network Time Protocol (SNTP) Version 4 for IPv4, IPv6 and OSI
 [link](https://www.rfc-editor.org/rfc/rfc2030) |  [archive.org](https://web.archive.org/web/20250331232623/https://www.rfc-editor.org/rfc/rfc2030)
 - Network Time Protocol Version 4: Protocol and Algorithms Specification
