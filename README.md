@@ -3,8 +3,8 @@ Provides a simple way to query a NTP server for time related data.
 ### Example
 ```
     NtpClient ntpClient = new NtpClient("192.168.1.1");
-    CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
 
+    CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
     NtpResponse ntpResponse = await ntpClient.GetTimeAsync(cts.Token);
 
     DateTime localTime = ntpResponse.TransmitTimestamp.ToLocalTime();
