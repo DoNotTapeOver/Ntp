@@ -2,7 +2,7 @@
 
 namespace Ntp
 {
-    public struct NtpQuery
+    public struct NtpResponse
     {
         /// <summary>
         /// Indicates whether an impending leap second is to be inserted or deleted in the last minute of the current day.

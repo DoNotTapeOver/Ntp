@@ -85,6 +85,22 @@ namespace Ntp
         }
 
         /// <summary>
+        /// Extract the Leap Indicator from the NTP packet flags.
+        /// </summary>
+        private static LeapIndicator ReadLeapIndicator(byte flags)
+        {
+            return (LeapIndicator)((flags & LeapIndicatorMask) >> 6);
+        }
+
+        /// <summary>
+        /// Extract the Protocol Version Number from the NTP packet flags.
+        /// </summary>
+        private static VersionNumber ReadVersionNumber(byte flags)
+        {
+            return (VersionNumber)((flags & VersionNumberMask) >> 3);
+        }
+
+        /// <summary>
         /// Converts a 32-bit NTP Short-Format timestamp at a specified position in a byte array to a TimeSpan.
         /// </summary>
         /// <param name="bytes">An array of bytes.</param>
@@ -140,20 +156,20 @@ namespace Ntp
         }
 
         /// <summary>
-        /// 
+        /// Query the ntp server.
         /// </summary>
         /// <returns></returns>
-        public async Task<NtpQuery> GetTimeAsync()
+        public async Task<NtpResponse> GetTimeAsync()
         {
             return await GetTimeAsync(CancellationToken.None);
         }
 
         /// <summary>
-        /// 
+        /// Query the ntp server.
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<NtpQuery> GetTimeAsync(CancellationToken cancellationToken)
+        public async Task<NtpResponse> GetTimeAsync(CancellationToken cancellationToken)
         {
             byte[] requestData = new byte[48];
             byte[] responseData = new byte[48];
@@ -193,10 +209,10 @@ namespace Ntp
             // Estimate the time it took for the request to be transmitted to the server.
             TimeSpan delay = (roundtripTimer.Elapsed - serverProcessingTime) / 2;
 
-            return new NtpQuery()
+            return new NtpResponse()
             {
-                LeapIndicator = (LeapIndicator)((responseData[0] & LeapIndicatorMask) >> 6),
-                Version = (VersionNumber)((responseData[0] & VersionNumberMask) >> 3),
+                LeapIndicator = ReadLeapIndicator(responseData[0]),
+                Version = ReadVersionNumber(responseData[0]),
                 Stratum = (Stratum)responseData[1],
                 PollInterval = TimeSpan.FromSeconds(Math.Pow(2, responseData[2])),
                 Precision = Math.Pow(2, responseData[3]),
