@@ -5,7 +5,9 @@ Provides a simple way to query a NTP server for time related data.
     NtpClient ntpClient = new NtpClient("192.168.1.1");
     CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
 
-    NtpQuery ntpQuery = await ntpClient.GetTimeAsync(cts.Token);
+    NtpResponse ntpResponse = await ntpClient.GetTimeAsync(cts.Token);
+
+    DateTime localTime = ntpResponse.TransmitTimestamp.ToLocalTime();
 ```
 ### References
 - Simple Network Time Protocol (SNTP) Version 4 for IPv4, IPv6 and OSI
