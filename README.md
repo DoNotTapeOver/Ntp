@@ -9,7 +9,7 @@ Provides a simple way to query a NTP server for time related data.
     {
         try
         {
-            ntpResponse = await NtpServer.GetTimeAsync(cts.Token);
+            ntpResponse = await ntpClient.GetTimeAsync(cts.Token);
         }
         catch (OperationCanceledException)
         {
